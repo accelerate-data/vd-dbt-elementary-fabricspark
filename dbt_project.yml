@@ -1,0 +1,10 @@
+name: 'elementary_fabricspark'
+version: '0.1.0'
+config-version: 2
+
+# This package provides fabricspark adapter support for Elementary
+profile: 'default'  # Not used, but required
+
+macro-paths: ["macros"]
+
+# No models, seeds, or other resources - just macros
