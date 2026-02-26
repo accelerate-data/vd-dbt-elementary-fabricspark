@@ -37,7 +37,7 @@ From Elementary documentation:
 packages:
   - package: elementary-data/elementary
     version: 0.22.1
-  - git: https://github.com/acceleratedata/dbt-elementary-fabricspark.git
+  - git: https://github.com/accelerate-data/vd-dbt-elementary-fabricspark.git
     revision: main
 ```
 
@@ -202,7 +202,7 @@ When Elementary releases a new version:
 
 This package is maintained by the AccelerateData team for internal use but is open source.
 
-Issues and PRs welcome at: https://github.com/acceleratedata/dbt-elementary-fabricspark
+Issues and PRs welcome at: https://github.com/accelerate-data/vd-dbt-elementary-fabricspark
 
 ## License
 
