@@ -199,22 +199,15 @@
 {% macro fabricspark__get_delete_and_insert_queries(relation, insert_relation, delete_relation, delete_column_key) %}
     {% set queries = [] %}
 
-    {# Calling `is_delta` raises an error if `metadata` is None - https://github.com/databricks/dbt-databricks/blob/33dca4b66b05f268741030b33659d34ff69591c1/dbt/adapters/databricks/relation.py#L71 #}
-    {% if delete_relation and relation.metadata and relation.is_delta %}
+    {# Fabric Lakehouse tables are always Delta. Delta does not support subqueries in DELETE,
+       so we always use MERGE instead. The spark__ version checks relation.is_delta which is
+       databricks-specific and not available on fabricspark adapter. #}
+    {% if delete_relation %}
         {% set delete_query %}
             merge into {{ relation }} as source
             using {{ delete_relation }} as target
             on (source.{{ delete_column_key }} = target.{{ delete_column_key }}) or source.{{ delete_column_key }} is null
             when matched then delete;
-        {% endset %}
-        {% do queries.append(delete_query) %}
-
-    {% elif delete_relation %}
-        {% set delete_query %}
-            delete from {{ relation }}
-            where
-            {{ delete_column_key }} is null
-            or {{ delete_column_key }} in (select {{ delete_column_key }} from {{ delete_relation }});
         {% endset %}
         {% do queries.append(delete_query) %}
     {% endif %}
