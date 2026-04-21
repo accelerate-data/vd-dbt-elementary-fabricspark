@@ -176,9 +176,13 @@
 {% endmacro %}
 
 {% macro fabricspark__edr_make_temp_relation(base_relation, suffix) %}
+    {#-- Fix: Do NOT set schema to none. Fabric schema-enabled lakehouses
+         require the full 4-part path (workspace.lakehouse.schema.table).
+         Setting schema=none drops it to 3-part, causing:
+         "Artifact not found: <workspace>.<workspace>"
+         Keep the base relation's schema so temp lands in the same schema. --#}
     {% set tmp_identifier = elementary.table_name_with_suffix(base_relation.identifier, suffix) %}
     {% set tmp_relation = base_relation.incorporate(path = {
-        "schema": none,
         "identifier": tmp_identifier
     }) -%}
 
